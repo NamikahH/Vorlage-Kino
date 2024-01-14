@@ -1,0 +1,104 @@
+public class Sitzreihe {
+   
+   //Ein Feld zur Verwaltung von 20 Sitzplaetzen (true = Sitz ist frei, false = Sitz ist belegt) deklarieren
+   Boolean [] sitzreihe;
+
+   public Sitzreihe() {
+      //Feld für die Sitzplatzverwaltung erzeugen
+      sitzreihe = new Boolean[20]; 
+      for (int i = 0; i < sitzreihe.length; i++) { //alle Sitze auf "frei" setzen
+         sitzreihe[i] = true;
+      }
+   }
+
+   public void BuchungOeffnen() {
+      if(Input.readBoolean("Wollen Sie einen Sitz buchen?") == false) {
+         System.exit(0); // schließt das Programm 
+      }
+   }
+
+   // Folgende Methode überprüft, ob der i-te Sitzplatz frei ist (Rückgabewert true, sonst false)
+   public Boolean platzFrei(int i) {
+      if(sitzreihe[i - 1] == true) { // Ist der Platz frei? //i-1 da wir bei Sitz#0 das Zählen anfangen 
+         print("Der Platz " + i + " ist ");
+         print("frei", Color.green);
+         println(".");
+         return true;
+      } else {
+         print("Der Platz " + i + " ist ");
+         print("besetzt", Color.red);
+         println(".");
+         return false;
+      }
+   }
+
+   // Folgende Methode bucht den --> vom Benutzer eingegebenen <-- Sitzplatz, 
+   // aber nur, wenn dieser frei ist
+   // (Rückgabewert bei Erfolg ist true, sonst false)
+   public boolean buche(int i) {
+      if(platzFrei(i) == true) {
+         if(Input.readBoolean("Möchten Sie Platz " + i + " buchen?") == true) { 
+            sitzreihe[i - 1] = false;
+            println("Platz " + i + " wurde gebucht.");
+         } else {
+            println("Abgebrochen.");
+         }
+         return true;
+      } else {
+         println("Der Sitzplatz ist leider schon belegt.");
+         return false;
+      }
+      return sitzreihe[i];
+   }
+   
+   // Folgende Methode zählt die Anzahl freier Sitzplätze und gibt diese zurück
+   public void anzahlFreiePlaetze() {
+      int anzahlFreiePlaetze = 0;
+      for (int i = 0; i < sitzreihe.length; i++) {
+         if(platzFrei(i + 1) == true) {
+            anzahlFreiePlaetze++; // macht das Selbe wie anzahlFreiePlaetze = anzahlFreiePlaetze + 1
+         }
+      }
+      println("Es sind " + anzahlFreiePlaetze + " Plätze frei.");
+      println("");
+   }
+
+   // Folgende Methode gibt aus, ob der Platz neben einen ausgewählten Sitz frei ist
+   public void doppelplatz(int i) {
+      if(platzFrei(i) == true) { // wenn der Ursprungsplatz nicht frei ist, brauchen wir gar nicht erst nach den Nachbarsitzen schauen
+         if(i == 20) { // wir schauen nur in eine Richtung, um Rechenfehler vorzubeugen
+            if(platzFrei(i - 1) == true) {
+               buche(i);
+               buche(i - 1);
+            }
+         } else if(i == 1) { // siehe oben
+            if(platzFrei(i + 1) == true) {
+               buche(i);
+               buche(i + 1);
+            }
+         } else if(platzFrei(i + 1) == true) { // Sitz zur rechten Seite
+            buche(i);
+            buche(i + 1);
+         } else if(platzFrei(i - 1) == true) { // Sitz zur linken Seite
+            buche(i);
+            buche(i - 1);
+         }
+      } 
+      println("");
+   }
+
+   public void programmAusgeben() {
+      println("Folgendes auf dem Programm:");
+      println("Saal 1: Napoleon um 13 Uhr und 16 Uhr");
+      println("Saal 2: Hunger Games: The Ballad of Songbirds and Snakes um 16 Uhr und 20 Uhr");
+      println("");
+   }
+
+   public void reihenbelegungAusgeben() {
+      println("Alle Informationen zu der Sitzreihe:");
+      for (int i = 0; i < sitzreihe.length; i++) { //geht durch die Sitzreihe
+         platzFrei(i + 1); //i+1 da wir bei platzFrei() wieder um 1 subtrahieren
+      }
+      println("");
+   }
+}
