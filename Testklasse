@@ -1,0 +1,9 @@
+Sitzreihe r1 = new Sitzreihe();
+println("Herzlich Willkommen bei unserem Kino mit einer Sitzreihe!");
+r1.programmAusgeben();
+r1.reihenbelegungAusgeben();
+println("Wir würden uns freuen, Sie heute bei uns begrüßen zu können.");
+r1.BuchungOeffnen(); 
+r1.buche(Input.readInt("Welchen Sitzplatz wollen Sie buchen?")); 
+r1.doppelplatz(Input.readInt("Welchen Platz wollen Sie nach Nachbarsitzen prüfen?")); 
+r1.anzahlFreiePlaetze(); //Problem: gibt ungewollt Reihenbelegung aus, Grund: platzFrei
